@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Tarefas {
+public class Tarefa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,9 @@ public class Tarefas {
     private boolean realizado;
     private String prioridade;
 
-    public Tarefas() {}
+    public Tarefa() {}
 
-    public Tarefas(Long id, String nome, String descricao, boolean realizado, String prioridade) {
+    public Tarefa(Long id, String nome, String descricao, boolean realizado, String prioridade) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;

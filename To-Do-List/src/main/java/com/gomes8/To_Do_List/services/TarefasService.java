@@ -1,7 +1,7 @@
 package com.gomes8.To_Do_List.services;
 
 import com.gomes8.To_Do_List.exceptions.ResourceNotFoundException;
-import com.gomes8.To_Do_List.model.Tarefas;
+import com.gomes8.To_Do_List.model.Tarefa;
 import com.gomes8.To_Do_List.repositories.TarefasRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +16,25 @@ public class TarefasService {
     @Autowired
     private TarefasRepository repository;
 
-    public Tarefas adicionarTarefa( Tarefas tarefa) {
+    public Tarefa adicionarTarefa(Tarefa tarefa) {
         return repository.save(tarefa);
     }
 
-    public List<Tarefas> listarTarefas() {
+    public List<Tarefa> listarTarefas() {
         return repository.findAll();
     }
 
-    public Optional<Tarefas> buscarTarefaPorID(Long id) {
+    public Optional<Tarefa> buscarTarefaPorID(Long id) {
         return repository.findById(id);
     }
 
-    public Optional<Tarefas> buscaTarefaPorNome(String nome) {
+    public Optional<Tarefa> buscaTarefaPorNome(String nome) {
         return repository.findByNome(nome);
     }
 
-    public Tarefas update(Long id, Tarefas obj) {
+    public Tarefa update(Long id, Tarefa obj) {
         try {
-            Tarefas entity = repository.getReferenceById(id);
+            Tarefa entity = repository.getReferenceById(id);
             updateData(entity, obj);
             return repository.save(entity);
         } catch (EntityNotFoundException e) {
@@ -42,7 +42,7 @@ public class TarefasService {
         }
     }
 
-    public void updateData(Tarefas entity, Tarefas obj) {
+    public void updateData(Tarefa entity, Tarefa obj) {
         entity.setNome(obj.getNome());
         entity.setDescricao(obj.getDescricao());
         entity.setPrioridade(obj.getPrioridade());
