@@ -1,9 +1,7 @@
 package com.gomes8.To_Do_List.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.gomes8.To_Do_List.model.enums.Prioridade;
+import jakarta.persistence.*;
 
 @Entity
 public class Tarefa {
@@ -14,15 +12,17 @@ public class Tarefa {
     private String nome;
     private String descricao;
     private boolean realizado;
-    private String prioridade;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "prioridade")
+    private Prioridade prioridade;
 
     public Tarefa() {}
 
-    public Tarefa(Long id, String nome, String descricao, boolean realizado, String prioridade) {
+    public Tarefa(Long id, String nome, String descricao, boolean realizado, Prioridade prioridade) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-        this.realizado = realizado;
+        this.realizado = false;
         this.prioridade = prioridade;
     }
 
@@ -58,11 +58,11 @@ public class Tarefa {
         this.realizado = realizado;
     }
 
-    public String getPrioridade() {
+    public Prioridade getPrioridade() {
         return prioridade;
     }
 
-    public void setPrioridade(String prioridade) {
+    public void setPrioridade(Prioridade prioridade) {
         this.prioridade = prioridade;
     }
 
