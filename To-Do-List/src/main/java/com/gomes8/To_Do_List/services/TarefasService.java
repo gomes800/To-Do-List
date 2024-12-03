@@ -51,4 +51,16 @@ public class TarefasService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    public Tarefa markAsCompleted(Long id) {
+        Optional<Tarefa> optionalTarefa = repository.findById(id);
+
+        if (optionalTarefa.isPresent()) {
+            Tarefa tarefa = optionalTarefa.get();
+            tarefa.setRealizado(true);
+            return repository.save(tarefa);
+        } else {
+            throw new ResourceNotFoundException(id);
+        }
+    }
 }

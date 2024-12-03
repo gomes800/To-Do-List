@@ -52,4 +52,10 @@ public class TarefasController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}/concluir")
+    public ResponseEntity<Tarefa> marcarComoconcluida(@PathVariable Long id) {
+        Tarefa tarefaConcluida = service.markAsCompleted(id);
+        return ResponseEntity.ok(tarefaConcluida);
+    }
+
 }
