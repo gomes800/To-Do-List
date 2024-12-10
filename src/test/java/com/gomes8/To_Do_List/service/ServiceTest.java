@@ -3,17 +3,15 @@ package com.gomes8.To_Do_List.service;
 import com.gomes8.To_Do_List.exceptions.ResourceNotFoundException;
 import com.gomes8.To_Do_List.model.Tarefa;
 import com.gomes8.To_Do_List.model.enums.Prioridade;
+import com.gomes8.To_Do_List.model.enums.Status;
 import com.gomes8.To_Do_List.repositories.TarefasRepository;
 import com.gomes8.To_Do_List.services.TarefasService;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +35,8 @@ public class ServiceTest {
     @Test
     public void deveRetornarTodasAsTarefas() {
         List<Tarefa> tarefasMock = Arrays.asList(
-                new Tarefa(1L, "Tarefa 1", "Teste 1", false, Prioridade.ALTA),
-                new Tarefa(2L, "Tarefa 2", "Teste 2",true, Prioridade.MEDIA )
+                new Tarefa(1L, "Tarefa 1", "Teste 1", Status.PENDENTE, Prioridade.ALTA),
+                new Tarefa(2L, "Tarefa 2", "Teste 2",Status.CONCLUIDA, Prioridade.MEDIA )
         );
 
         when(tarefasRepository.findAll()).thenReturn(tarefasMock);
@@ -51,7 +49,7 @@ public class ServiceTest {
 
     @Test
     public void deveEncontrarUmaTarefaPorId() {
-        Tarefa tarefa = new Tarefa(7L, "Tarefa", "Tarefa a ser encontrada", true, Prioridade.MEDIA);
+        Tarefa tarefa = new Tarefa(7L, "Tarefa", "Tarefa a ser encontrada", Status.PENDENTE, Prioridade.MEDIA);
 
         when(tarefasRepository.findById(7L)).thenReturn(Optional.of(tarefa));
 
@@ -72,7 +70,7 @@ public class ServiceTest {
 
     @Test
     public void deveEncontrarTarefaPeloNome() {
-        Tarefa tarefa = new Tarefa(8L, "Tarefa 8", "Tarefa a ser encontra pelo nome.", false, Prioridade.BAIXA);
+        Tarefa tarefa = new Tarefa(8L, "Tarefa 8", "Tarefa a ser encontra pelo nome.", Status.PENDENTE, Prioridade.BAIXA);
         when(tarefasRepository.findByNome(tarefa.getNome())).thenReturn(Optional.of(tarefa));
 
         Optional<Tarefa> resultado = tarefasService.buscaTarefaPorNome("Tarefa 8");
@@ -93,8 +91,8 @@ public class ServiceTest {
 
     @Test
     public void deveAdicionarNovaTarefa() {
-        Tarefa novaTarefa = new Tarefa(null, "Tarefa 3", "Teste 3", false, Prioridade.BAIXA);
-        Tarefa tarefaSalva = new Tarefa(3L, "Tarefa 3", "Teste 3", false, Prioridade.BAIXA);
+        Tarefa novaTarefa = new Tarefa(null, "Tarefa 3", "Teste 3", Status.PENDENTE, Prioridade.BAIXA);
+        Tarefa tarefaSalva = new Tarefa(3L, "Tarefa 3", "Teste 3", Status.PENDENTE, Prioridade.BAIXA);
 
         when(tarefasRepository.save(novaTarefa)).thenReturn(tarefaSalva);
 
@@ -108,9 +106,9 @@ public class ServiceTest {
     public void deveAtualizarUmaTarefa() {
         Long idTarefa = 1L;
 
-        Tarefa tarefaExistente = new Tarefa(idTarefa, "Tarefa antiga", "Descrição antiga", false, Prioridade.ALTA);
+        Tarefa tarefaExistente = new Tarefa(idTarefa, "Tarefa antiga", "Descrição antiga", Status.PENDENTE, Prioridade.ALTA);
 
-        Tarefa tarefaAtualizada = new Tarefa(5L, "Tarefa atualizada", "Descrição atualizada", false, Prioridade.BAIXA);
+        Tarefa tarefaAtualizada = new Tarefa(5L, "Tarefa atualizada", "Descrição atualizada", Status.PENDENTE, Prioridade.BAIXA);
 
         when(tarefasRepository.getReferenceById(idTarefa)).thenReturn(tarefaExistente);
 
@@ -121,7 +119,7 @@ public class ServiceTest {
         assertEquals("Tarefa atualizada", resultado.getNome());
         assertEquals("Descrição atualizada", resultado.getDescricao());
         assertEquals(Prioridade.BAIXA, resultado.getPrioridade());
-        assertFalse(resultado.isRealizado());
+        assertEquals(Status.PENDENTE, resultado.getStatus());
 
         verify(tarefasRepository, times(1)).getReferenceById(idTarefa);
         verify(tarefasRepository, times(1)).save(tarefaExistente);
@@ -150,7 +148,7 @@ public class ServiceTest {
     @Test
     public void deveMarcarComoConcluido() {
         Long id = 6L;
-        Tarefa tarefa = new Tarefa(id, "Tarefa", "Teste marcar como concluída", false, Prioridade.ALTA);
+        Tarefa tarefa = new Tarefa(id, "Tarefa", "Teste marcar como concluída", Status.PENDENTE, Prioridade.ALTA);
 
         when(tarefasRepository.findById(id)).thenReturn(Optional.of(tarefa));
 
@@ -158,7 +156,7 @@ public class ServiceTest {
 
         Tarefa resultado = tarefasService.markAsCompleted(id);
 
-        assertTrue(resultado.isRealizado(), "A tarefa deveria estar marcada como concluída.");
+        assertEquals(Status.CONCLUIDA, resultado.getStatus());
 
     }
 

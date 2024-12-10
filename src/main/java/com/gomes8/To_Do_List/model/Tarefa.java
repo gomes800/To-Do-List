@@ -1,6 +1,7 @@
 package com.gomes8.To_Do_List.model;
 
 import com.gomes8.To_Do_List.model.enums.Prioridade;
+import com.gomes8.To_Do_List.model.enums.Status;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,18 +12,20 @@ public class Tarefa {
     private Long id;
     private String nome;
     private String descricao;
-    private boolean realizado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
     @Enumerated(EnumType.STRING)
     @Column(name = "prioridade")
     private Prioridade prioridade;
 
     public Tarefa() {}
 
-    public Tarefa(Long id, String nome, String descricao, boolean realizado, Prioridade prioridade) {
+    public Tarefa(Long id, String nome, String descricao, Status status, Prioridade prioridade) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-        this.realizado = false;
+        this.status = Status.PENDENTE;
         this.prioridade = prioridade;
     }
 
@@ -50,12 +53,12 @@ public class Tarefa {
         this.descricao = descricao;
     }
 
-    public boolean isRealizado() {
-        return realizado;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setRealizado(boolean realizado) {
-        this.realizado = realizado;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Prioridade getPrioridade() {

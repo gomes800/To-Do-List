@@ -2,6 +2,7 @@ package com.gomes8.To_Do_List.services;
 
 import com.gomes8.To_Do_List.exceptions.ResourceNotFoundException;
 import com.gomes8.To_Do_List.model.Tarefa;
+import com.gomes8.To_Do_List.model.enums.Status;
 import com.gomes8.To_Do_List.repositories.TarefasRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class TarefasService {
 
         if (optionalTarefa.isPresent()) {
             Tarefa tarefa = optionalTarefa.get();
-            tarefa.setRealizado(true);
+            tarefa.setStatus(Status.CONCLUIDA);
             return repository.save(tarefa);
         } else {
             throw new ResourceNotFoundException(id);
