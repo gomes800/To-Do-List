@@ -25,7 +25,7 @@ public class Tarefa {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-        this.status = Status.PENDENTE;
+        this.status = status;
         this.prioridade = prioridade;
     }
 

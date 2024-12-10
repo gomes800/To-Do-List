@@ -1,6 +1,7 @@
 package com.gomes8.To_Do_List.controllers;
 
 import com.gomes8.To_Do_List.model.Tarefa;
+import com.gomes8.To_Do_List.model.enums.Status;
 import com.gomes8.To_Do_List.services.TarefasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,9 @@ public class TarefasController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<Tarefa> adicionarTarefa(@RequestBody Tarefa tarefa) {
+        if (tarefa.getStatus() == null) {
+            tarefa.setStatus(Status.PENDENTE);
+        }
         Tarefa novaTarefa = service.adicionarTarefa(tarefa);
         return new ResponseEntity<>(novaTarefa, HttpStatus.CREATED);
     }
