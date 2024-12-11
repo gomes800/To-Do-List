@@ -2,6 +2,7 @@ package com.gomes8.To_Do_List.controllers;
 
 import com.gomes8.To_Do_List.model.Tarefa;
 import com.gomes8.To_Do_List.model.enums.Status;
+import com.gomes8.To_Do_List.repositories.TarefasRepository;
 import com.gomes8.To_Do_List.services.TarefasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,14 @@ public class TarefasController {
     public ResponseEntity<Tarefa> buscarTarefaPorNome(@PathVariable String nome) {
         Optional<Tarefa> tarefas = service.buscaTarefaPorNome(nome);
         return tarefas.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/status")
+    public List<Tarefa> buscaPorStatus(@RequestParam Status status) {
+        if (status != null) {
+            return service.buscarPorStatus(status);
+        }
+        return service.listarTarefas();
     }
 
     @PostMapping("/adicionar")

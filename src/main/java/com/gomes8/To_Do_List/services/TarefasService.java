@@ -33,6 +33,10 @@ public class TarefasService {
         return repository.findByNome(nome);
     }
 
+    public List<Tarefa> buscarPorStatus(Status status) {
+        return repository.findByStatus(status);
+    }
+
     public Tarefa update(Long id, Tarefa obj) {
         try {
             Tarefa entity = repository.getReferenceById(id);
