@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,21 @@ public class ServiceTest {
 
         assertEquals(1L, tarefas.get(0).getId(), "O ID está incorreto.");
         assertEquals("Tarefa 2", tarefas.get(1).getNome(), "O Título está incorreto.");
+    }
+
+    @Test
+    public void deveListarAsTarefasPeloStatus() {
+        Tarefa tarefa1 = new Tarefa(1L, "Tarefa 10", "Teste PENDENTE", Status.PENDENTE, Prioridade.ALTA);
+        Tarefa tarefa2 = new Tarefa(2L, "Tarefa 15", "Teste CONCLUIDA",Status.CONCLUIDA, Prioridade.MEDIA );
+        Tarefa tarefa3 = new Tarefa(3L, "Tarefa 21", "Teste CONCLUIDA",Status.CONCLUIDA, Prioridade.MEDIA );
+
+        when(tarefasRepository.findByStatus(Status.CONCLUIDA)).thenReturn(Arrays.asList(tarefa2, tarefa3));
+
+        List<Tarefa> tarefas = tarefasService.buscarPorStatus(Status.CONCLUIDA);
+
+        assertEquals(Status.CONCLUIDA, tarefa2.getStatus(), "O status está incorreto.");
+        assertEquals(Status.CONCLUIDA, tarefa3.getStatus(), "O status está incorreto.");
+
     }
 
     @Test
